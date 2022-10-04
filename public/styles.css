@@ -130,7 +130,7 @@ p {
 }
 
 .form__group__button {
-    margin-top: 2%;
+    margin-top: 0;
     float: right;
     border-radius:8px;
 }

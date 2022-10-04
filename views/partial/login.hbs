@@ -1,0 +1,11 @@
+{{#unless signed_in}}
+<ul class="header__login">
+  <li class="header__login__li"><a class="header__login__link" href="/registration">Регистрация</a></li>
+  <li class="header__login__li"><a class="header__login__link" href="/login">Войти</a></li>
+</ul>
+{{else}}
+<ul class="header__login">
+  <li class="header__login__li"><a class="header__login__link">Вы хуй</a></li>
+  <li class="header__login__li"><a class="header__login__link" href="/login">Вы йти</a></li>
+</ul>
+{{/unless}}

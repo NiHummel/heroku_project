@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>App</title>
-  </head>
-  <body>
-    {{ message }}
-  </body>
+<html lang="ru">
+<head>
+  {{> head }}
+</head>
+<body class="page">
+<header class="header">
+  {{> header }}
+</header>
+<main class="main">
+  {{> content this.content }}
+</main>
+<footer class="footer">
+  {{> footer }}
+</footer>
+{{> shared_scripts content=this.content}}
+</body>
 </html>
