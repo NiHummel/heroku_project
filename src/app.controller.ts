@@ -1,11 +1,27 @@
-import { Get, Controller, Render, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+  Delete,
+  Render,
+  UseInterceptors
+} from '@nestjs/common';
 import { TimerInterceptor } from './timer.interceptor';
-import { readFile } from "fs";
+import { UserService } from './user/user.service';
+import { PostService } from './post/post.service';
+import { User as UserModel, Post as PostModel } from '@prisma/client';
 
 
 @Controller()
 @UseInterceptors(TimerInterceptor)
 export class AppController {
+  constructor(
+    private readonly userService: UserService,
+    private readonly postService: PostService,
+  ) {}
   signed_in = false;
 
   @Get('/')
@@ -32,4 +48,8 @@ export class AppController {
       content: 'schedule'
     };
   };
+
+  getHello() {
+    return undefined;
+  }
 }

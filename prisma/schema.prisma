@@ -14,4 +14,14 @@ model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
   name  String?
+  post  Post[]
+}
+
+model Post {
+  id        Int      @default(autoincrement()) @id
+  content   String
+  picture   String?
+  banned    Boolean? @default(true)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
 }
