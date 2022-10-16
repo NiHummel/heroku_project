@@ -10,9 +10,8 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { TimerInterceptor } from './timer.interceptor';
-import { UserService } from './user/user.service';
-import { PostService } from './post/post.service';
-import { User as UserModel, Post as PostModel } from '@prisma/client';
+import { PostService } from "./post/post.service";
+import { UserService } from "./user/user.service";
 
 
 @Controller()
@@ -20,9 +19,9 @@ import { User as UserModel, Post as PostModel } from '@prisma/client';
 export class AppController {
   constructor(
     private readonly userService: UserService,
-    private readonly postService: PostService,
+    private readonly postService: PostService
   ) {}
-  signed_in = false;
+  signed_in = true;
 
   @Get('/')
   @Render('index')
@@ -48,6 +47,19 @@ export class AppController {
       content: 'schedule'
     };
   };
+  @Get('feed')
+  @Render('index')
+  async getFeed() {
+    let feed = await this.postService.posts({where: { banned: false }});
+    for (let key in feed) {
+      feed[key]["author"] = (await this.userService.user({ id: +feed[key]['authorId'] }))["name"]
+    }
+    return {
+      signed_in: this.signed_in,
+      content: 'feed',
+      feed: feed
+    }
+  }
 
   getHello() {
     return undefined;

@@ -1,7 +1,8 @@
-import { Get, Controller, Render, UseInterceptors, Post, Body } from "@nestjs/common";
+import { Get, Controller, Render, UseInterceptors, Post, Body, Param } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from "./user.service";
-import { User as UserModel } from "@prisma/client";
+import { Post as PostModel, User as UserModel } from "@prisma/client";
+import { UserInfoDto } from "./dto/user.dto";
 
 @ApiTags('User')
 @Controller()
@@ -11,9 +12,13 @@ export class UserController {
   ) {}
   signed_in = false;
 
+  @Get('user/:id')
+  async getUserById(@Param('id') id:string): Promise<UserModel> {
+    return this.userService.user({ id: Number(id) });
+  }
   @Post('user')
   async signupUser(
-    @Body() userData: { name?: string; email: string },
+    @Body() userData: UserInfoDto,
   ): Promise<UserModel> {
     return this.userService.createUser(userData);
   }

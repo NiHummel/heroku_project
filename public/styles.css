@@ -124,14 +124,29 @@ p {
     box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
     border-radius:8px;
 }
+.form__group__content {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
 .form__group__input {
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-    border-radius:8px;
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
 }
 
 .form__group__button {
-    margin-top: 0;
-    float: right;
+    width: 130px;
+    margin-bottom: 0;
+    border: 2px solid #ccc;
     border-radius:8px;
 }
 .form__group_text {
@@ -187,4 +202,27 @@ p {
         overflow-x: hidden;
         padding-top: 10px;
     }
+}
+.header__login{
+    margin-left: 1%;
+    padding-inline-start: 10%;
+}
+
+.header__login__li {
+    list-style-type: none;
+}
+
+.header__login__link {
+    text-decoration: none;
+    outline: none;
+    color: #f54141;
+}
+
+.header__login__li {
+    color: #d1b1ee;
+    line-height: 22px;
+    text-align: left;
+}
+.header__login__link:hover {
+    color: white;
 }

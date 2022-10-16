@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
   {{> head }}
 </head>
 <body class="page">
@@ -8,7 +9,11 @@
   {{> header }}
 </header>
 <main class="main">
-  {{> content this.content }}
+  {{#if_eq this.content 'feed'}}
+    {{> feed}}
+  {{else}}
+    {{> content this.content }}
+  {{/if_eq}}
 </main>
 <footer class="footer">
   {{> footer }}
