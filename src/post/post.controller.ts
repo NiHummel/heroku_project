@@ -16,6 +16,8 @@ import { PostService } from "./post.service";
 import { PostDto } from "./dto/post.dto";
 
 @ApiTags('Posting')
+@ApiResponse({ status: HttpStatus.OK, description: 'Success' })
+@ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
 @Controller()
 export class PostController {
   constructor(
@@ -36,6 +38,7 @@ export class PostController {
   }
 
   @Post('post')
+  @ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Given picture url is not correct' })
   async createPost(
     @Body() postDto: PostDto,
   ): Promise<PostModel> {

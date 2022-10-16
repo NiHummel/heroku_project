@@ -50,7 +50,7 @@ export class AppController {
   @Get('feed')
   @Render('index')
   async getFeed() {
-    let feed = await this.postService.posts({where: { banned: false }});
+    let feed = await this.postService.posts({where: { banned: false }, orderBy: { id: 'desc' }});
     for (let key in feed) {
       feed[key]["author"] = (await this.userService.user({ id: +feed[key]['authorId'] }))["name"]
     }
