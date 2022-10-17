@@ -12,7 +12,7 @@ async function createPost() {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
-      body: `{"content": "${content}"${picture ? `, "picture": "${picture}",` : ""}}`,
+      body: `{"content": "${content}"${picture ? `, "picture": "${picture}"` : ""}}`,
     });
     if (response.ok)
       location.reload()
