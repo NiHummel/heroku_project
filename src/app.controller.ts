@@ -80,7 +80,7 @@ export class AppController {
     @Body() userData: UserInfoDto,
     @Res() res) {
     this.signed_in = true;
-    await session.updateSessionData({email: userData['email']})
+    await session.updateSessionData(userData)
     return res.redirect('back');
   }
   @UseGuards(new AuthGuard())

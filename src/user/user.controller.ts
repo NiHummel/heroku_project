@@ -39,7 +39,7 @@ export class UserController {
     @Session() session: SessionContainer,
     @Body() userData: UserInfoDto,
   ): Promise<UserModel> {
-    return this.userService.createUser(userData);
+    return this.userService.createUser(await session.getSessionData());
   }
 
   getHello() {

@@ -80,29 +80,27 @@ async function sign_in() {
         document.getElementById("login_error").style.display = "block";
       } else {
         document.getElementById("login_error").style.display = "none";
-        if (nickname_input !== '')
-          await fetch("/user", {
+          await fetch("/login", {
             method: "POST",
             headers: {
               'Accept': '*/*',
               'Content-Type': 'application/json'
             },
             body: `{
-              "name": "${nickname_input}",
-              "email": "${email_input}"
-            }`
-          })
-        await fetch("/login", {
-          method: "POST",
-          headers: {
-            'Accept': '*/*',
-            'Content-Type': 'application/json'
-          },
-          body: `{
             "name": "${nickname_input}",
             "email": "${email_input}"
           }`
-        })
+          })
+        if (nickname_input !== '')
+        await fetch("/user", {
+            method: "POST",
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'application/json'
+            },
+            body: "{}"
+          })
+
       }
     })
   })
@@ -111,6 +109,7 @@ async function sign_in() {
 
 function openForm() {
   document.getElementById("signForm").style.display = "block";
+  return false;
 }
 function closeForm() {
   location.reload()
