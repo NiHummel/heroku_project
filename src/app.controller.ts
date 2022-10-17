@@ -29,7 +29,7 @@ export class AppController {
 
   @Get('/')
   @Render('index')
-  root(@Res() res) {
+  root() {
     return {
       signed_in: this.signed_in,
       content: 'main'
@@ -37,7 +37,7 @@ export class AppController {
   };
   @Get('table')
   @Render('index')
-  getTable(@Res() res) {
+  getTable() {
     return {
       signed_in: this.signed_in,
       content: 'table'
@@ -45,7 +45,7 @@ export class AppController {
   };
   @Get('schedule')
   @Render('index')
-  getSchedule(@Res() res) {
+  getSchedule() {
     return {
       signed_in: this.signed_in,
       content: 'schedule'
@@ -53,7 +53,7 @@ export class AppController {
   };
   @Get('feed')
   @Render('index')
-  async getFeed(@Res() res) {
+  async getFeed() {
     let feed = await this.postService.posts({where: { banned: false }, orderBy: { id: 'desc' }});
     for (let key in feed) {
       feed[key]["author"] = (await this.userService.user({ id: +feed[key]['authorId'] }))["name"]
