@@ -3,10 +3,11 @@
     <h4 class="form__group_text">Чтобы опубликовать пост - войдите в аккаунт</h4>
   </form>
 {{else}}
-  <form class="form__group" onsubmit="return false;">
+  <form class="form__group" onsubmit="return false;" id="form">
     <input class="form__group__content" id="content" placeholder="Текст" required type="text">
     <input class="form__group__input" id="picture" placeholder="URL картинки" type="text">
     <button class="form__group__button" id="button" onsubmit="return false;" type="submit">Опубликовать</button>
+    <div class="error" id="form__group__error" style="display: block;"></div>
   </form>
 {{/unless}}
 <div class="feed">

@@ -1,0 +1,28 @@
+<div class="form-popup" id="signForm">
+  <form class="form-container" onsubmit="return false">
+    <h1>Login</h1>
+
+    <div class="form__email">
+      <label for="email"><b>Email</b></label>
+      <input type="text" id="email_input" placeholder="Enter Email" name="email" required>
+    </div>
+
+    <label for="message" class="newbie"><i>You don't have account yet, choose nickname</i></label>
+
+    <div class="newbie">
+      <label for="name"><b>Nickname</b></label>
+      <input type="text" id="nickname_input" placeholder="Enter Nickname" name="name">
+    </div>
+
+    <label for="message" class="otp"><i>Enter code from email</i></label>
+
+    <div class="otp">
+      <label for="code"><b>Code</b></label>
+      <input type="text" id="otp_input" placeholder="Enter Your Code Here" name="code">
+    </div>
+    <div class="error" id="login_error">Пароли не совпадают</div>
+    <button type="submit" class="btn" id="login-button">Login</button>
+    <button type="submit" class="btn" id="sign_in-button">Login</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>

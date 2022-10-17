@@ -21,5 +21,5 @@ export class PostDto {
     example: 'nhummel72@yandex.ru',
   })
   @IsEmail()
-  authorEmail: string;
+  authorEmail?: string;
 }

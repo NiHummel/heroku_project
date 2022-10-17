@@ -1,16 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import supertokens from 'supertokens-node';
 import { AppModule } from './app.module';
 import * as hbs from 'hbs';
 import { readFileSync } from "fs";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SupertokensExceptionFilter } from "./auth/auth.filter";
+import { stringify } from "ts-jest";
 
 async function bootstrap() {
-  const port = process.env.PORT || 8888;
+  const port = process.env.PORT || 3000;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Project example')
+    .setTitle('Api Lab 4')
     .setDescription('The lab API description')
     .setVersion('1.0')
     .build();
@@ -30,6 +33,12 @@ async function bootstrap() {
   });
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
+    credentials: true,
+  });
+  app.useGlobalFilters(new SupertokensExceptionFilter());
 
   await app.listen(port);
 }

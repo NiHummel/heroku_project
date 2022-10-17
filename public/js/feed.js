@@ -1,12 +1,12 @@
 async function createPost() {
-  let content="";
+  let content = "";
   content = document.getElementById("content").value;
-  let picture= null;
+  let picture = null;
   picture = document.getElementById("picture").value;
 
   if(content !== "") {
     // create post and refresh
-    const response = await fetch('http://' + location.host + '/post', {
+    const response = await fetch('/post', {
       method: 'POST',
       headers: {
         'Accept': '*/*',
@@ -15,11 +15,14 @@ async function createPost() {
       body: `{
      "content": "${content}",
      ${picture ? `"picture": "${picture}",` : ""}
-     "authorEmail": "deb@ya.ru"
       }`,
     });
     if (response.ok)
       location.reload()
+    else {
+      let x = await JSON.parse(await response.text());
+      document.getElementById('form__group__error').innerText = x['error'];
+    }
   }
 }
 
