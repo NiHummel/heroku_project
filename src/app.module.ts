@@ -7,7 +7,6 @@ import { UserService } from "./user/user.service";
 import { PostService } from "./post/post.service";
 import { PrismaService } from "./prisma.service";
 import { AuthModule } from './auth/auth.module';
-import { WidgetModule } from './widget/widget.module';
 
 @Module({
   imports: [AppModule,
@@ -23,8 +22,7 @@ import { WidgetModule } from './widget/widget.module';
         apiBasePath: "/auth",
         websiteBasePath: "/",
       },
-    }),
-    WidgetModule,],
+    }),],
   controllers: [AppController, UserController, PostController],
   providers: [
     AppService,
