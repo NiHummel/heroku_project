@@ -7,7 +7,6 @@ import * as hbs from 'hbs';
 import { readFileSync } from "fs";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { SupertokensExceptionFilter } from "./auth/auth.filter";
-import { stringify } from "ts-jest";
 
 async function bootstrap() {
   const port = process.env.PORT || 3000;
