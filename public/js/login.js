@@ -1,12 +1,11 @@
-var preAuth = {};
+let preAuth = {};
 
 async function login() {
-
   function f(e) {
     if (!e)
       return
-    e.style.display = "block"
-    e.setAttribute("required", "")
+    e.style.display = "block";
+    e.requered = true;
   }
 
   let email_input = "";
@@ -26,28 +25,29 @@ async function login() {
         document.getElementById("login_error").style.display = "block";
       } else {
         document.getElementById("login_error").style.display = "none";
-        await fetch("/auth/signinup/code", {
-          method: "POST",
-          headers: {
-            'Accept': '*/*',
-            'Content-Type': 'application/json'
-          },
-          body: `{
-            "email": "${email_input}"
-          }`
-        }).then(async function(res) {
-          preAuth = await res.json()
-        })
         document.getElementById("email_input").readOnly = true;
         document.getElementById("login-button").style.display = "none";
+        while (preAuth['status'] !== 'OK')
+          await fetch("/auth/signinup/code", {
+            method: "POST",
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'application/json'
+            },
+            body: `{
+              "email": "${email_input}"
+            }`
+          }).then(async function(res) {
+            preAuth = await res.json()
+          })
         document.getElementById("sign_in-button").style.display = "block";
+        document.getElementById("login-button").style.display = "none";
         if (!data.exists) {
           f(document.getElementById("nickname_input"));
           document.querySelectorAll(".newbie").forEach(e => e.style.display = "block");
         }
         f(document.getElementById("code_input"));
         document.querySelectorAll(".otp").forEach(e => e.style.display = "block");
-        document.getElementById("login-button").setAttribute("id", "sign_in-button");
       }
     })
   })
@@ -60,6 +60,8 @@ async function sign_in() {
   nickname_input = document.getElementById("nickname_input").value;
   let otp_input = "";
   otp_input = document.getElementById("otp_input").value;
+  if (otp_input === "")
+    return
 
   await fetch("/auth/signinup/code/consume", {
     method: "POST",
@@ -76,7 +78,7 @@ async function sign_in() {
     response.json().then(async function(data) {
       if (data.status !== "OK") {
         console.log(data);
-        document.getElementById("login_error").innerHTML = data.formFields[0].error;
+        document.getElementById("login_error").innerHTML = data.status;
         document.getElementById("login_error").style.display = "block";
       } else {
         document.getElementById("login_error").style.display = "none";
@@ -100,11 +102,26 @@ async function sign_in() {
             },
             body: "{}"
           })
-
+        location.reload()
       }
     })
   })
-  location.reload()
+}
+
+async function tryLoginOrOpenForm() {
+  let response = await fetch("/login", {
+    method: "POST",
+    headers: {
+      "Accept": "*/*",
+      "Content-Type": "application/json"
+    },
+    body: '{"name":"","email":""}'
+  })
+  if (response.ok) {
+    location.reload();
+    return false
+  }
+  return openForm()
 }
 
 function openForm() {
