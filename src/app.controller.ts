@@ -80,8 +80,6 @@ export class AppController {
     @Body() userData: UserInfoDto,
     @Res() res) {
     this.signed_in = true;
-    if (!(await session.getSessionData()))
-      await session.updateSessionData(userData)
     return res.redirect('back');
   }
   @UseGuards(new AuthGuard())

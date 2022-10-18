@@ -17,6 +17,7 @@ import { PostDto } from "./dto/post.dto";
 import { AuthGuard } from "../auth/auth.guard";
 import { Session } from "../auth/session.decorator";
 import { SessionContainer } from "supertokens-node/recipe/session";
+import { getUserById } from "supertokens-node/lib/build/recipe/passwordless";
 
 @ApiTags('Posting')
 @ApiResponse({ status: HttpStatus.OK, description: 'Success' })
@@ -49,8 +50,11 @@ export class PostController {
     @Body() postDto: PostDto,
   ): Promise<PostModel> {
     let { content, picture, authorEmail } = postDto;
-    if (!authorEmail)
-      await session.getSessionData().then(function(data) {authorEmail = data['email']})
+    if (!authorEmail) {
+      let userId = session.getUserId();
+      let userInfo = await getUserById({ userId })
+      authorEmail = userInfo.email;
+    }
     const isImageURL = require('image-url-validator').default;
     if (!picture || await isImageURL(picture)) {
       return this.postService.createPost({
