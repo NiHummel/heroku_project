@@ -17,6 +17,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { Session } from './auth/session.decorator';
 import { UserInfoDto } from "./user/dto/user.dto";
 import { getUserById } from "supertokens-node/lib/build/recipe/passwordless";
+import { ApiBasicAuth } from "@nestjs/swagger";
 
 @Controller()
 @UseInterceptors(TimerInterceptor)
@@ -77,6 +78,7 @@ export class AppController {
 
   @UseGuards(new AuthGuard())
   @Get('logout')
+  @ApiBasicAuth()
   async logout(
     @Session() session: SessionContainer,
     @Res() res) {
@@ -87,6 +89,7 @@ export class AppController {
 
   @UseGuards(new AuthGuard())
   @Post('login')
+  @ApiBasicAuth()
   async login(
     @Session() session: SessionContainer,
     @Body() userData: UserInfoDto,

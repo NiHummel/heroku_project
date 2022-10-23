@@ -11,7 +11,7 @@ import {
   HttpException, HttpStatus, UseGuards
 } from "@nestjs/common";
 import { Post as PostModel, User as UserModel } from "@prisma/client";
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { PostService } from "./post.service";
 import { PostDto } from "./dto/post.dto";
 import { AuthGuard } from "../auth/auth.guard";
@@ -44,6 +44,7 @@ export class PostController {
   @UseGuards(new AuthGuard())
   @ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Given picture url is not correct' })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Wrong credentials' })
+  @ApiBasicAuth()
   async createPost(
     @Session() session: SessionContainer,
     @Body() postDto: PostDto,
@@ -73,7 +74,13 @@ export class PostController {
   @ApiOperation({ summary: 'Ban post by id' })
   @UseGuards(new AuthGuard())
   @Put('ban/:id')
-  async banPost(@Param('id') id: string): Promise<PostModel> {
+  @ApiBasicAuth()
+  async banPost(
+    @Session() session: SessionContainer,
+    @Param('id') id: string): Promise<PostModel> {
+    let reqBody = await session.getSessionData();
+    if (reqBody.email !== 'nikitaloloff1999@gmail.com')
+      id = '-1';
     return this.postService.updatePost({
       where: { id: Number(id) },
       data: { banned: true },
@@ -82,7 +89,13 @@ export class PostController {
   @ApiOperation({ summary: 'Delete post by id' })
   @UseGuards(new AuthGuard())
   @Delete('post/:id')
-  async deletePost(@Param('id') id: string): Promise<PostModel> {
+  @ApiBasicAuth()
+  async deletePost(
+    @Session() session: SessionContainer,
+    @Param('id') id: string): Promise<PostModel> {
+    let reqBody = await session.getSessionData();
+    if (reqBody.email !== 'nikitaloloff1999@gmail.com')
+      id = '-1';
     return this.postService.deletePost({ id: Number(id) });
   }
 

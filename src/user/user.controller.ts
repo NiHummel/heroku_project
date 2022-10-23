@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
   UseGuards, Query
 } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserService } from "./user.service";
 import { Post as PostModel, User as UserModel } from "@prisma/client";
 import { UserInfoDto } from "./dto/user.dto";
@@ -35,12 +35,13 @@ export class UserController {
   @ApiOperation({ summary: 'Create user with email and nickname' })
   @UseGuards(new AuthGuard())
   @Post('user')
+  @ApiBasicAuth()
   async signupUser(
     @Session() session: SessionContainer,
     @Body() userData: UserInfoDto,
   ): Promise<UserModel> {
     let reqBody = await session.getSessionData();
-    if (reqBody.email == 'nikitaloloff1999@gmail.com')
+    if (reqBody.email === 'nikitaloloff1999@gmail.com')
       reqBody = userData;
     return this.userService.createUser(reqBody);
   }
@@ -48,6 +49,7 @@ export class UserController {
   @ApiOperation({ summary: 'Get current user email and name' })
   @UseGuards(new AuthGuard())
   @Get('userCredentials')
+  @ApiBasicAuth()
   async userCredential(
     @Session() session: SessionContainer,
   ): Promise<UserModel> {
