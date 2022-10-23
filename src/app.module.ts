@@ -7,9 +7,11 @@ import { UserService } from "./user/user.service";
 import { PostService } from "./post/post.service";
 import { PrismaService } from "./prisma.service";
 import { AuthModule } from './auth/auth.module';
+import { WidgetModule } from './widget/widget.module';
 
 @Module({
   imports: [AppModule,
+    WidgetModule,
     AuthModule.forRoot({
       // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
       connectionURI: "https://bb9166414d8911edaf0539cc8b310def-eu-west-1.aws.supertokens.io:3568",

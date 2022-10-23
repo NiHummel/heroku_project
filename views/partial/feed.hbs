@@ -1,29 +1,31 @@
-{{#unless signed_in}}
-  <form class="form__group" onsubmit="return false;">
-    <h4 class="form__group_text">Чтобы опубликовать пост - войдите в аккаунт</h4>
-  </form>
-{{else}}
-  <form class="form__group" onsubmit="return false;" id="form">
-    <input class="form__group__content" id="content" placeholder="Текст" required type="text">
-    <input class="form__group__input" id="picture" placeholder="URL картинки" type="text">
-    <button class="form__group__button" id="button" onsubmit="return false;" type="submit">Опубликовать</button>
-    <div class="error" id="form__group__error" style="display: block;"></div>
-  </form>
-{{/unless}}
-<div class="feed">
-  <div class="row justify-content-center">
-    {{#each feed}}
-      <div class="col-lg-7" style="margin-top: 50px;">
-        <div class="card">
-          {{#if this.picture}}
-            <img src="{{this.picture}}" class="card-img-top" alt="...">
-          {{/if}}
-          <div class="card-body">
-            <h4 class="card-text">{{this.content}}</h4>
-            <h5 class="card-text">Posted by {{this.author}}</h5>
+<div class="feed__div" id="feed__div">
+  {{#unless signed_in}}
+    <form class="form__group" onsubmit="return false;">
+      <h4 class="form__group_text">Чтобы опубликовать пост - войдите в аккаунт</h4>
+    </form>
+  {{else}}
+    <form class="form__group" onsubmit="return false;" id="form">
+      <input class="form__group__content" id="content" placeholder="Текст" required type="text">
+      <input class="form__group__input" id="picture" placeholder="URL картинки" type="text">
+      <button class="form__group__button" id="button" onsubmit="return false;" type="submit">Опубликовать</button>
+      <div class="error" id="form__group__error" style="display: block;"></div>
+    </form>
+  {{/unless}}
+  <div class="feed">
+    <div class="row justify-content-center">
+      {{#each feed}}
+        <div class="col-lg-7" style="margin-top: 50px;">
+          <div class="card">
+            {{#if this.picture}}
+              <img src="{{this.picture}}" class="card-img-top" alt="...">
+            {{/if}}
+            <div class="card-body">
+              <h4 class="card-text">{{this.content}}</h4>
+              <h5 class="card-text">Posted by {{this.author}}</h5>
+            </div>
           </div>
         </div>
-      </div>
-    {{/each}}
+      {{/each}}
+    </div>
   </div>
 </div>

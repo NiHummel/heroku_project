@@ -1,13 +1,6 @@
 let preAuth = {};
 
 async function login() {
-  function f(e) {
-    if (!e)
-      return
-    e.style.display = "block";
-    e.requered = true;
-  }
-
   let email_input = "";
   email_input = document.getElementById("email_input").value;
   if (email_input === "")
@@ -40,13 +33,13 @@ async function login() {
           }).then(async function(res) {
             preAuth = await res.json()
           })
-        document.getElementById("sign_in-button").style.display = "block";
         document.getElementById("login-button").style.display = "none";
+        document.getElementById("sign_in-button").style.display = "block";
         if (!data.exists) {
-          f(document.getElementById("nickname_input"));
+          document.getElementById("nickname_input").requered = true;
           document.querySelectorAll(".newbie").forEach(e => e.style.display = "block");
         }
-        f(document.getElementById("code_input"));
+        document.getElementById("otp_input").requered = true;
         document.querySelectorAll(".otp").forEach(e => e.style.display = "block");
       }
     })

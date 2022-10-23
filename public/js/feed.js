@@ -14,16 +14,23 @@ async function createPost() {
       },
       body: `{"content": "${content}"${picture ? `, "picture": "${picture}"` : ""}}`,
     });
-    if (response.ok)
-      location.reload()
-    else {
+    if (!response.ok) {
       let x = await JSON.parse(await response.text());
       document.getElementById('form__group__error').innerText = x['error'];
     }
   }
 }
 
-let button = document.querySelector(".form__group__button");
-button.addEventListener("click", function (event) {
-  createPost();
+let button = document.getElementById("button");
+button.addEventListener("click", async function(event) {
+  await createPost();
+  const response = await fetch('/userCredentials', {
+    method: 'Get',
+    headers: {
+      'Accept': '*/*',
+      'Content-Type': 'application/json'
+    },
+  });
+  send(await JSON.parse(await response.text()));
+  location.reload()
 })
