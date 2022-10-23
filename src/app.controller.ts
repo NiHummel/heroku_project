@@ -18,7 +18,6 @@ import { Session } from './auth/session.decorator';
 import { UserInfoDto } from "./user/dto/user.dto";
 import { getUserById } from "supertokens-node/lib/build/recipe/passwordless";
 
-
 @Controller()
 @UseInterceptors(TimerInterceptor)
 export class AppController {
@@ -27,22 +26,23 @@ export class AppController {
     private readonly postService: PostService,
   ) {}
   async signed_in(@Session() session: SessionContainer) {
+    console.log(session)
     if (!session)
       return false
     let userId = session.getUserId();
     let userInfo = await getUserById({ userId });
     return await this.userService.user({ email: userInfo.email });
   }
-
+  @UseGuards(new AuthGuard({sessionRequired: false}))
   @Get('/')
   @Render('index')
   async root(@Session() session: SessionContainer) {
     return {
       signed_in: await this.signed_in(session),
-      content: 'main',
-      debug: await this.signed_in(session)
+      content: 'main'
     };
   };
+  @UseGuards(new AuthGuard({sessionRequired: false}))
   @Get('table')
   @Render('index')
   async getTable(@Session() session: SessionContainer) {
@@ -51,6 +51,7 @@ export class AppController {
       content: 'table'
     };
   };
+  @UseGuards(new AuthGuard({sessionRequired: false}))
   @Get('schedule')
   @Render('index')
   async getSchedule(@Session() session: SessionContainer) {
@@ -59,6 +60,7 @@ export class AppController {
       content: 'schedule'
     };
   };
+  @UseGuards(new AuthGuard({sessionRequired: false}))
   @Get('feed')
   @Render('index')
   async getFeed(@Session() session: SessionContainer) {
@@ -72,14 +74,17 @@ export class AppController {
       feed: feed
     }
   }
+
   @UseGuards(new AuthGuard())
   @Get('logout')
   async logout(
     @Session() session: SessionContainer,
     @Res() res) {
     res.clearCookie('sAccessToken');
+    res.clearCookie('sIdRefreshToken');
     return res.redirect('back');
   }
+
   @UseGuards(new AuthGuard())
   @Post('login')
   async login(
