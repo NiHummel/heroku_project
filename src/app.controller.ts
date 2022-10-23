@@ -16,6 +16,7 @@ import { SessionContainer } from "supertokens-node/recipe/session";
 import { AuthGuard } from './auth/auth.guard';
 import { Session } from './auth/session.decorator';
 import { UserInfoDto } from "./user/dto/user.dto";
+import { getUserById } from "supertokens-node/lib/build/recipe/passwordless";
 
 
 @Controller()
@@ -23,43 +24,42 @@ import { UserInfoDto } from "./user/dto/user.dto";
 export class AppController {
   constructor(
     private readonly userService: UserService,
-    private readonly postService: PostService
+    private readonly postService: PostService,
   ) {}
-  signed_in = false;
 
   @Get('/')
   @Render('index')
-  root() {
+  root(@Session() session: SessionContainer) {
     return {
-      signed_in: this.signed_in,
+      signed_in: new AuthGuard(),
       content: 'main'
     };
   };
   @Get('table')
   @Render('index')
-  getTable() {
+  getTable(@Session() session: SessionContainer) {
     return {
-      signed_in: this.signed_in,
+      signed_in: new AuthGuard(),
       content: 'table'
     };
   };
   @Get('schedule')
   @Render('index')
-  getSchedule() {
+  getSchedule(@Session() session: SessionContainer) {
     return {
-      signed_in: this.signed_in,
+      signed_in: new AuthGuard(),
       content: 'schedule'
     };
   };
   @Get('feed')
   @Render('index')
-  async getFeed() {
+  async getFeed(@Session() session: SessionContainer) {
     let feed = await this.postService.posts({where: { banned: false }, orderBy: { id: 'desc' }});
     for (let key in feed) {
       feed[key]["author"] = (await this.userService.user({ id: +feed[key]['authorId'] }))["name"]
     }
     return {
-      signed_in: this.signed_in,
+      signed_in: new AuthGuard(),
       content: 'feed',
       feed: feed
     }
@@ -70,7 +70,6 @@ export class AppController {
     @Session() session: SessionContainer,
     @Res() res) {
     res.clearCookie('sAccessToken');
-    this.signed_in = false;
     return res.redirect('back');
   }
   @UseGuards(new AuthGuard())
@@ -79,7 +78,6 @@ export class AppController {
     @Session() session: SessionContainer,
     @Body() userData: UserInfoDto,
     @Res() res) {
-    this.signed_in = true;
     await session.updateSessionData({email: userData.email, name: userData.name});
     return res.redirect('back');
   }

@@ -27,13 +27,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
   ) {}
-  signed_in = false;
-  @ApiOperation({ summary: 'Get user credential by id' })
-  @Get('userById')
-  async getUserById(@Query('id', ParseIntPipe) id: string): Promise<UserModel> {
-    return this.userService.user({ id: Number(id) });
-  }
-  @ApiOperation({ summary: 'Get user credential by id' })
+  @ApiOperation({ summary: 'Get user credential by email' })
   @Get('userByEmail')
   async getUserByEmail(@Query('email') email: string): Promise<UserModel> {
     return this.userService.user({ email: email });

@@ -27,7 +27,6 @@ export class PostController {
   constructor(
     private readonly postService: PostService,
   ) {}
-  signed_in = false;
   @ApiOperation({ summary: 'Get post by id' })
   @Get('post/:id')
   async getPostById(@Param('id') id: string): Promise<PostModel> {
