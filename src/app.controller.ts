@@ -26,28 +26,36 @@ export class AppController {
     private readonly userService: UserService,
     private readonly postService: PostService,
   ) {}
+  async signed_in(@Session() session: SessionContainer) {
+    if (!session)
+      return false
+    let userId = session.getUserId();
+    let userInfo = await getUserById({ userId });
+    return await this.userService.user({ email: userInfo.email });
+  }
 
   @Get('/')
   @Render('index')
-  root(@Session() session: SessionContainer) {
+  async root(@Session() session: SessionContainer) {
     return {
-      signed_in: new AuthGuard(),
-      content: 'main'
+      signed_in: await this.signed_in(session),
+      content: 'main',
+      debug: await this.signed_in(session)
     };
   };
   @Get('table')
   @Render('index')
-  getTable(@Session() session: SessionContainer) {
+  async getTable(@Session() session: SessionContainer) {
     return {
-      signed_in: new AuthGuard(),
+      signed_in: await this.signed_in(session),
       content: 'table'
     };
   };
   @Get('schedule')
   @Render('index')
-  getSchedule(@Session() session: SessionContainer) {
+  async getSchedule(@Session() session: SessionContainer) {
     return {
-      signed_in: new AuthGuard(),
+      signed_in: await this.signed_in(session),
       content: 'schedule'
     };
   };
@@ -59,7 +67,7 @@ export class AppController {
       feed[key]["author"] = (await this.userService.user({ id: +feed[key]['authorId'] }))["name"]
     }
     return {
-      signed_in: new AuthGuard(),
+      signed_in: await this.signed_in(session),
       content: 'feed',
       feed: feed
     }
